@@ -1,5 +1,5 @@
 FROM node
-LABEL authors="Leandro Portocci"
+LABEL authors="Leandro Luiz Portocci"
 
 # update dependencies and install curl
 RUN apt-get update && apt-get install -y \
