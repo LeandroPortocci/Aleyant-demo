@@ -1,0 +1,34 @@
+{
+  "name": "Aleyant-demo",
+  "version": "1.0.0",
+  "description": "This is a demo app",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "start": "babel-node ./app.js",
+    "test": "jest",
+    "build": "echo Test build completed! No package was uploaded"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeandroPortocci/Aleyant-demo.git"
+  },
+  "keywords": [
+    "demoapp",
+    "jest",
+    "node"
+  ],
+  "author": "Leandro Portocci",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LeandroPortocci/Aleyant-demo/issues"
+  },
+  "homepage": "https://github.com/LeandroPortocci/Aleyant-demo.git",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset": "^1.1.7",
+    "babel-preset-env": "^1.7.0",
+    "express": "^4.17.3",
+    "jest": "^27.5.1"
+  }
+}
