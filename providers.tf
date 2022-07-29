@@ -8,7 +8,7 @@
 # corresponding provider blocks in configuration
 provider "google" {
   # version = "~> 3.77.0"
-  project = "Aleyant-demo"
+  project = "aleyant-demo-357813"
   region  = "us-central1-c"
 }
 ####
