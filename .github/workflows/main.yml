@@ -76,6 +76,14 @@ jobs:
             push: true
             tags: ${{ secrets.DOCKERHUB_USERNAME }}/ultimate-app:prod-version
 
+        - name: Build and push HAProxy
+          uses: docker/build-push-action@v2
+          with:
+            context: /HAProxy
+            file: ./Dockerfile
+            push: true
+            tags: ${{ secrets.DOCKERHUB_USERNAME }}/HAProxy:prod-version
+
 
         #   Is has vulnerabilities the deploy process will be interrumpeted
         # - name: Security Container Scan
