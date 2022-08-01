@@ -82,7 +82,7 @@ jobs:
             context: /HAProxy
             file: ./Dockerfile
             push: true
-            tags: ${{ secrets.DOCKERHUB_USERNAME }}/HAProxy:prod-version
+            tags: ${{ secrets.DOCKERHUB_USERNAME }}/haproxy:prod-version
 
 
         #   Is has vulnerabilities the deploy process will be interrumpeted
