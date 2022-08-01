@@ -79,7 +79,7 @@ jobs:
         - name: Build and push HAProxy
           uses: docker/build-push-action@v2
           with:
-            context: /HAProxy
+            context: ./HAProxy
             file: ./Dockerfile
             push: true
             tags: ${{ secrets.DOCKERHUB_USERNAME }}/haproxy:prod-version
