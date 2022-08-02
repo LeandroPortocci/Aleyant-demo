@@ -11,7 +11,7 @@ Terraform {
 
 provider "google" {
   # version = "~> 3.77.0"
-  project = "aleyant-demo-357810"
+  project = "aleyant-demo-358210"
   region  = "us-central1-c"
 }
 
