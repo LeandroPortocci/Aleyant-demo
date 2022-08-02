@@ -2,17 +2,12 @@ terraform {
   required_providers{
     google = {
       version = "~> 3.77.0"
+      project = "aleyant-demo-358210"
+    region  = "us-central1-c"
     }
+  }
  }
   
-provider "google" {
-  
-  project = "aleyant-demo-358210"
-  region  = "us-central1-c"
-}
-
-}
-
 # -------------------------------------------------------------*
 # Configure the Google Cloud provider
 # -------------------------------------------------------------*
