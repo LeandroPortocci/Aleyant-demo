@@ -74,14 +74,14 @@ jobs:
             context: ./
             file: ./Dockerfile
             push: true
- ##         tags: ${{ secrets.DOCKERHUB_USERNAME }}/aleyant-demo:dev
-            tags: ${{ secrets.DOCKERHUB_USERNAME }}/aleyant-demo:prod-version
+            tags: ${{ secrets.DOCKERHUB_USERNAME }}/aleyant-demo:dev
+ ##         tags: ${{ secrets.DOCKERHUB_USERNAME }}/aleyant-demo:prod-version
           
         - name: Run the image in a container
           uses: addnab/docker-run-action@v3
           with:
-##          image: ${{ secrets.DOCKERHUB_USERNAME }}/aleyant-demo:dev
-            image: ${{ secrets.DOCKERHUB_USERNAME }}/aleyant-demo:prod-version
+             image: ${{ secrets.DOCKERHUB_USERNAME }}/aleyant-demo:dev
+##           image: ${{ secrets.DOCKERHUB_USERNAME }}/aleyant-demo:prod-version
             run: |
               echo "runing the docker image"
               echo "Testing the nodejs  app endpoints"
