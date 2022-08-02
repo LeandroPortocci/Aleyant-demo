@@ -74,23 +74,18 @@ jobs:
             context: ./
             file: ./Dockerfile
             push: true
-            tags: ${{ secrets.DOCKERHUB_USERNAME }}/ultimate-app:prod-version
-
-
-        #   Is has vulnerabilities the deploy process will be interrumpeted
-        # - name: Security Container Scan
-        #   uses: Azure/container-scan@v0
-        #   with:
-        #     image-name: ${{ secrets.DOCKERHUB_USERNAME }}/ultimate-app:latest 
+            tags: ${{ secrets.DOCKERHUB_USERNAME }}/aleyant-demo:dev
+            tags: ${{ secrets.DOCKERHUB_USERNAME }}/aleyant-demo:prod-version
           
         - name: Run the image in a container
           uses: addnab/docker-run-action@v3
           with:
-            image: ${{ secrets.DOCKERHUB_USERNAME }}/ultimate-app:prod-version
+            image: ${{ secrets.DOCKERHUB_USERNAME }}/aleyant-demo:prod-version
             run: |
               echo "runing the docker image"
               echo "Testing the nodejs  app endpoints"
               echo ${{ steps.docker_build.outputs.digest }}
+
   deploy_to_heroku:
     name: Deploy to Heroku
     runs-on: ubuntu-latest
