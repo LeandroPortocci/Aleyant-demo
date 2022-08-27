@@ -3,22 +3,102 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  padding-bottom: 10px;
 }
 
 .left-section {
-  background-color: lightblue;
   width: 160px;
+  align-items: center;
+  display: flex;
 }
 
 .middle-section {
-  background-color: lightcoral;
   flex: 1;
   margin-left: 65px;
   margin-right: 35px;
   max-width: 470px;
+  align-items: center;
+  display: flex;
 }
 
 .right-section {
-  background-color: lightgreen;
-  width: 200px;
+  width: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.hamburguer-menu {
+  height: 25px;
+  margin-left: 24px;
+}
+
+.youtube-logo {
+  height: 25px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.search-button {
+  width: 60px;
+  height: 38.5px;
+  border-radius: 2px;
+  border-width: 1px;
+  border-color: rgb(202, 202, 202);
+  border-style: solid;
+  background-color: rgb(245, 245, 245);
+}
+
+.search-img {
+  height: 25px;
+  vertical-align: middle;
+}
+
+.search-bar::placeholder {
+  font-family: Roboto, Arial;
+  font-size: 16px;
+}
+
+.search-bar {
+  flex: 1;
+  padding-left: 10px;
+  border-radius: 2px;
+  height: 35px;
+  width: 0;
+  border-width: 1px;
+  border-color: rgb(202, 202, 202);
+  border-style: solid;
+  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.voice-search {
+  width: 40px;
+  height: 39px;
+  border: none;
+  border-radius: 20px;
+  background-color: transparent;
+  cursor: pointer;
+  margin-left: 5px;
+  transition: background-color 0.3s,
+  transform 0.3s;
+}
+
+.voice-search:hover {
+  background-color: rgb(243, 240, 240);
+  transform: scale(1.1);
+}
+
+.voice-icon {
+  height: 25px;
+  vertical-align: middle;
+}
+
+.right-icons {
+  height: 26px;
+}
+
+.youtube-profile {
+  height: 33px;
 }
