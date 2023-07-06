@@ -8,7 +8,7 @@
 # corresponding provider blocks in configuration
 provider "google" {
   # version = "~> 3.77.0"
-  project = "gcp-demo-348420"
+  project = "My Project 49739"
   region  = "us-central1-c"
 }
 ####
