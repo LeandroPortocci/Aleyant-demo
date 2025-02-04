@@ -1,0 +1,105 @@
+name: CD
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+jobs:
+  testing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 7
+          run_install: false
+      - name: Get pnpm cache directory path
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      - uses: actions/cache@v3
+        id: pnpm-cache # use this to check for `cache-hit` (`steps.pnpm-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: start deployment
+        uses: bobheadxi/deployments@v0.5.2
+        id: deployment
+        with:
+          step: start
+          token: ${{ secrets.GH_PAT }}
+          env: testing
+
+      - name: Publish Testing
+        run: |
+          pip3 install awscli
+          IMAGE="992071562033.dkr.ecr.us-east-2.amazonaws.com/mevuelo2-api"
+          aws configure set aws_access_key_id "${{ secrets.AWS_ACCESS_KEY_ID_K8s }}"
+          aws configure set aws_secret_access_key "${{ secrets.AWS_SECRET_ACCESS_KEY_K8s }}"
+          eval $(aws ecr get-login --no-include-email --region us-east-2 | sed 's;https://;;g')
+          docker build -t $IMAGE:testing .
+          docker push $IMAGE --all-tags
+
+      - name: finish deployment
+        uses: bobheadxi/deployments@v0.5.2
+        if: always()
+        with:
+          step: finish
+          token: ${{ secrets.GH_PAT}}
+          status: ${{ job.status }}
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+
+  deploy-on-eks-testing:
+    needs: testing
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_K8s }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_K8s }}
+          aws-region: sa-east-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: deploy to cluster
+        uses: kodermax/kubectl-aws-eks@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA_DEV }}
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: mevuelo2-api
+          IMAGE_TAG: ${{needs.steps.deployment.outputs.deployment_id}}
+          KUBECTL_VERSION: "v1.23.0"
+        with:
+          args: set image deployment/$ECR_REPOSITORY $ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -n testing
+
+      - name: restart the deployment
+        uses: kodermax/kubectl-aws-eks@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA_DEV }}
+          KUBECTL_VERSION: "v1.23.0"
+        with:
+          args: rollout restart deployment/mevuelo2-api -n testing
+
+      - name: verify deployment
+        uses: kodermax/kubectl-aws-eks@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA_DEV }}
+        with:
+          args: rollout status deployment/registration-service -n testing
